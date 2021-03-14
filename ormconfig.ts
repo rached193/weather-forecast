@@ -1,4 +1,5 @@
-import PgConf  from './hidden.json';
+// import PgConf  from './hidden.json';
+let PgConf;
 export = {
     type: "postgres",
     username: process.env.DATABASE_USERNAME || PgConf.username,
