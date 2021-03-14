@@ -1,0 +1,15 @@
+.hours-container{
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 15px;
+
+    .row-hour{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        width: 68px;
+        height: 68px;
+    }
+}

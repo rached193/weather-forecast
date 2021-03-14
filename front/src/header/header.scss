@@ -1,0 +1,30 @@
+.header{
+    background-image: url(./bg-img-1.jpg);
+    height: 515px;
+
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .searcher{
+        margin-right: auto;
+        margin-left: auto;
+        background-color: white;
+        width: 724px;
+        padding: 30px;
+
+        .searcher-container{
+            display: inline-block;
+            width: 75%;
+            padding-right: 20px;
+        }
+
+        span{
+            display: inline-block;
+            width: 20%;
+        }
+    }
+}

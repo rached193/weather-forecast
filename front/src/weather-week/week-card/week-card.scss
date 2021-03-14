@@ -1,0 +1,39 @@
+.week-day{
+    background: white;
+
+    .day-label{
+        text-align: center;
+        .label{
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .sub-label{
+            color: #0000008f;
+        }
+    }
+
+    .day-icon{
+        height: 100px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        &.sunny{
+            background-image: url(./sun.svg);
+            
+        }
+    }
+    .day-temperature{
+        display: flex;
+        justify-content: space-around;
+        padding: 6px 14px;
+        font-size: 18px;
+
+        .max{
+            color: #c00;
+        }
+        .min{
+            color: #006dbd;
+        }
+    }
+
+  
+}

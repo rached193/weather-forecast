@@ -1,0 +1,18 @@
+
+.container-week{
+        padding: 30px 50px;
+    
+        background: #F4F4F4;
+
+
+        .week{
+       
+            padding: 80px 15px;
+            margin: 0 auto;
+       
+            grid-template-columns: repeat( auto-fill, minmax(120px, 1fr) );
+            max-width: calc(7 * 125px);
+            grid-gap: 5px;
+            display: grid;
+        }
+}
