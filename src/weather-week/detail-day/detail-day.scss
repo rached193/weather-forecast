@@ -11,5 +11,26 @@
         border: 1px solid black;
         width: 68px;
         height: 68px;
+        
+        margin-left: -1px;
+        margin-top: -1px;
+
+        // &:not(:first-child){
+        //     border-left: unset;
+        // }
+
+        .hour-label{
+            align-items: center;
+            display: inline-flex;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, .1);
+
+            padding: 4px 8px;
+        }
+
+        .hour-value{
+         line-height: 44px;
+         text-align: center;
+        }
     }
 }

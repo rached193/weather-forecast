@@ -1,5 +1,12 @@
 .week-day{
-    background: white;
+    background-color: white;
+    cursor: pointer;
+    &:hover{
+        background-color: #EAEAEA;
+    }
+    &.active{
+        background-color: #d6d6d6;
+    }
 
     .day-label{
         text-align: center;
@@ -18,7 +25,18 @@
         background-position: center center;
         &.sunny{
             background-image: url(./sun.svg);
-            
+        }
+        &.cloudy{
+            background-image: url(./cloud.svg);
+        }
+        &.rainy{
+            background-image: url(./rain.svg);
+        }
+        &.stormy{
+            background-image: url(./storm.svg);
+        }
+        &.snowy{
+            background-image: url(./snow.svg);
         }
     }
     .day-temperature{

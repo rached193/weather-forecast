@@ -14,5 +14,9 @@
             max-width: calc(7 * 125px);
             grid-gap: 5px;
             display: grid;
+
+            .week-day-container{
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            }
         }
 }

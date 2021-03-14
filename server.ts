@@ -39,7 +39,6 @@ createConnection().then(connection => {
                 const results = await weatherRepository.save(weather);
                 return res.send(results);
             } catch (error) {
-                console.log(error);
                 res.status(500).json({ status: 'error', message: error.message || 'Algo extraño paso...' })
             }
         }
@@ -49,23 +48,44 @@ createConnection().then(connection => {
     app.get("/find", async function (req: Request, res: Response) {
         if (!req.query.city) {
             res.status(400).json({ status: 'error', message: 'queryparam "city" no es valido' });
+            return
         }
 
         if (!req.query.date && new Date(req.query.date as string)) {
             res.status(400).json({ status: 'error', message: 'queryparam "date" no es valido' })
+            return
         }
 
         const starDate = new Date(req.query.date as string);
         starDate.setDate(starDate.getDate() + -1);
         const endDate = new Date(req.query.date as string);
-        endDate.setDate(endDate.getDate() + 7);
+        endDate.setDate(endDate.getDate() + 6);
 
+        try {
+            const dates = await weatherRepository.find({
+                where: {
+                    date: Between(starDate, endDate),
+                    city: req.query.city
+                },
+                order: {
+                    date: "ASC",
+                }
+            });
+            res.send(dates);
 
+        } catch (error) {
+            res.status(500).json({ status: 'error', message: error.message || 'Algo extraño paso...' })
+        }
 
-        const dates = await weatherRepository.find({
-            date: Between(starDate, endDate)
-        });
-        res.send(dates);
+    });
+
+    app.get("/city", async function (req: Request, res: Response) {
+        const result = await weatherRepository.createQueryBuilder()
+            .select('city')
+            .distinct(true)
+            .getRawMany();
+
+        res.send(result.map(x => x.city));
     });
 
     app.delete("/weather", async function (req: Request, res: Response) {
