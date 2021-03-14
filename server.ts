@@ -1,10 +1,11 @@
-import { validate } from "class-validator";
-import express from "express";
+import { validate } from 'class-validator';
+import express from 'express';
+import path from 'path';
 
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { Between, createConnection, MoreThanOrEqual } from "typeorm";
-import { WeatherDay } from "./enties/weather-day";
+import { Between, createConnection, MoreThanOrEqual } from 'typeorm';
+import { WeatherDay } from './enties/weather-day';
 
 console.log('Conectando con BD')
 
@@ -22,13 +23,13 @@ createConnection().then(connection => {
     // });
 
 
-    app.get("/weather", async function (req: Request, res: Response) {
+    app.get('/weather', async function (req: Request, res: Response) {
         const result = await weatherRepository.find();
         res.send(result);
     });
 
 
-    app.post("/weather", async function (req: Request, res: Response) {
+    app.post('/weather', async function (req: Request, res: Response) {
         const weather = await weatherRepository.create(req.body);
         const errors = await validate(weather);
         if (errors.length > 0) {
@@ -45,7 +46,7 @@ createConnection().then(connection => {
 
     });
 
-    app.get("/find", async function (req: Request, res: Response) {
+    app.get('/find', async function (req: Request, res: Response) {
         if (!req.query.city) {
             res.status(400).json({ status: 'error', message: 'queryparam "city" no es valido' });
             return
@@ -79,7 +80,7 @@ createConnection().then(connection => {
 
     });
 
-    app.get("/city", async function (req: Request, res: Response) {
+    app.get('/city', async function (req: Request, res: Response) {
         const result = await weatherRepository.createQueryBuilder()
             .select('city')
             .distinct(true)
@@ -88,15 +89,25 @@ createConnection().then(connection => {
         res.send(result.map(x => x.city));
     });
 
-    app.delete("/weather", async function (req: Request, res: Response) {
+    app.delete('/weather', async function (req: Request, res: Response) {
         const result = await weatherRepository.clear();
         res.send(result);
     });
 
+    // Serve only the static files form the dist directory
+    // app.use(favicon(__dirname + '/build/favicon.ico'));
+    // the __dirname is the current directory from where the script is running
+    app.use(express.static(__dirname));
+    app.use(express.static(path.join(__dirname, 'build')));
+
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+      });
 
     // Start the app by listening on the default Heroku port
-    app.listen(process.env.PORT || 8080);
-
-    console.log('Servidor Escuchando ...');
+    const port = process.env.PORT || 8080;
+    app.listen(port, () => {
+        console.log(`Servidor corriendo en ${port}`);
+    });
 
 });
