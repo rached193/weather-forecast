@@ -52,7 +52,7 @@ This app is purely based on RESTful API, therefore you should expect JSON respon
 | /find?city={cityname}&date={currentDate} | GET    | Returning the weather data of seven next days filtered by date and location | https://adidas-weather.herokuapp.com/find?city=Zaragoza&date=2021-03-14
 
 
-##Hosting
+## Hosting
 You can check the app!
 [Heroku-App](https://adidas-weather.herokuapp.com/)
 
