@@ -43,7 +43,7 @@ Launches the test runner in the interactive watch mode.\
 
 This app is purely based on RESTful API, therefore you should expect JSON response with the request you make.
 
-| API Route | Method | Context                                                                                                                                                                                                          | Example request                                      |
+| API Route | Method | Context   | Example request                                      |
 |-------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------|
 | /city | GET    | Returning all the cities  | https://adidas-weather.herokuapp.com/city
 | /weather | GET    | Returning all the weather data   | https://adidas-weather.herokuapp.com/weather
