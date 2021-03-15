@@ -49,7 +49,7 @@ This app is purely based on RESTful API, therefore you should expect JSON respon
 | /weather | GET    | Returning all the weather data   | https://adidas-weather.herokuapp.com/weather
 | /weather | POST    |Adding new weather data   | {"city": "Moscu","max":17,"min": 6,"date": "2021-03-20","state": 2,"temperatureHours": [ 14,30,12,13,15,30,25,10,17,24,29,2,16,10,6,7,9]}
 | /weather | DELETE    | Erasing all the weather data  | https://adidas-weather.herokuapp.com/city
-| /find?city={cityname}&date={currentDate} | GET    | Returning all the cities  | https://adidas-weather.herokuapp.com/find?city=Zaragoza&date=2021-03-14
+| /find?city={cityname}&date={currentDate} | GET    | Returning the weather data of seven next days filtered by date and location | https://adidas-weather.herokuapp.com/find?city=Zaragoza&date=2021-03-14
 
 
 ##Hosting
