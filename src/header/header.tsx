@@ -1,6 +1,7 @@
 import React from "react";
-import { Subscription } from "rxjs";
+import { of, Subscription } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
+import { catchError } from "rxjs/operators";
 import { AutoComplete } from "./autocomplete/autocomplete";
 import './header.scss'
 
@@ -16,9 +17,10 @@ export class Header extends React.Component<{}, { cities: string[] }> {
     componentDidMount() {
         fromFetch(`/city`, {
             selector: response => response.json()
-        }).subscribe(res => {
-            this.setState({ cities: res })
-        });
+        }).pipe(catchError(error => { console.error(error); return of([]) }))
+            .subscribe(res => {
+                this.setState({ cities: res })
+            });
     }
 
     render() {

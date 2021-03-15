@@ -53,7 +53,7 @@ export class AutoComplete extends React.Component<AutocompleteModel, { active: b
 
     filterOptions(event: React.FormEvent<HTMLInputElement>) {
         const input = event.target as HTMLInputElement;
-        const filteredValues = this.props.cities.filter(x => x.toLowerCase().includes(input.value.toLowerCase()));
+        const filteredValues = this.props.cities.filter(x => x.toLowerCase().includes(input.value.toLowerCase().trim()));
         this.setState({ cities: filteredValues, value: input.value });
     }
 

@@ -24,7 +24,11 @@ createConnection().then(connection => {
 
 
     app.get('/weather', async function (req: Request, res: Response) {
-        const result = await weatherRepository.find();
+        const result = await weatherRepository.find({
+            order: {
+                city: "ASC",
+            }
+        });
         res.send(result);
     });
 

@@ -43,12 +43,17 @@ Launches the test runner in the interactive watch mode.\
 
 This app is purely based on RESTful API, therefore you should expect JSON response with the request you make.
 
-| API Route | Method | Context                                                                                                                                                                                                          | Output | Example request                                      |
+| API Route | Method | Context                                                                                                                                                                                                          | Example request                                      |
 |-------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------|
-| /weather | GET    | Returning all the weather data | JSON   | https://adidas-weather.herokuapp.com/weather
+| /city | GET    | Returning all the cities  | https://adidas-weather.herokuapp.com/city
+| /weather | GET    | Returning all the weather data   | https://adidas-weather.herokuapp.com/weather
+| /weather | POST    |Adding new weather data   | {"city": "Moscu","max":17,"min": 6,"date": "2021-03-20","state": 2,"temperatureHours": [ 14,30,12,13,15,30,25,10,17,24,29,2,16,10,6,7,9]}
+| /weather | DELETE    | Erasing all the weather data  | https://adidas-weather.herokuapp.com/city
+| /find?city={cityname}&date={currentDate} | GET    | Returning all the cities  | https://adidas-weather.herokuapp.com/find?city=Zaragoza&date=2021-03-14
 
 
 ##Hosting
+You can check the app!
 [Heroku-App](https://adidas-weather.herokuapp.com/)
 
 ## Post-Processing CSS

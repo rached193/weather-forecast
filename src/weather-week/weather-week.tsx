@@ -1,7 +1,7 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { header$ } from '../header/header.store';
 import { DetailDay } from './detail-day/detail-day';
 import './weather-week.scss'
@@ -27,12 +27,12 @@ export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[]
     componentDidMount() {
         const currentDate = new Date();
         this.suscription = header$.pipe(
-            switchMap(city => fromFetch(`/find?city=${city}&date=${currentDate.toISOString()}`, {
+            switchMap(city => fromFetch<WeekCardModel[]>(`/find?city=${city}&date=${currentDate.toISOString()}`, {
                 selector: response => response.json()
-            }).pipe(map(res => [res, city]))
+            }).pipe(map(res => [res, city]), catchError(error => { console.error(error); return of([[], '']) })),
             )
         ).subscribe(([res, city]) => {
-            this.setState({ dataWeek: res, selectedDay: 0, city: city })
+            this.setState({ dataWeek: res as WeekCardModel[], selectedDay: 0, city: city as string })
         });
     }
 
@@ -51,14 +51,14 @@ export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[]
                 <h1>{this.state.city}</h1>
                 <div className="week">
                     {this.state.dataWeek.map((x, i) =>
-                        <div className="week-day-container" onClick={() => { this.changeDay(i) }}>
-                            <WeekCard key={x.date} data={x} active={this.state.selectedDay === i} ></WeekCard>
+                        <div key={x.date} className="week-day-container" onClick={() => { this.changeDay(i) }}>
+                            <WeekCard  data={x} active={this.state.selectedDay === i} ></WeekCard>
                         </div>
                     )}
                 </div>
                 <DetailDay hours={this.state.dataWeek[this.state.selectedDay]?.temperatureHours}></DetailDay>
                 {this.state.dataWeek.length === 0 &&
-                <h1>Seleccione una ciudad para comenzar</h1>
+                    <h1>Seleccione una ciudad para comenzar</h1>
                 }
             </div>
         );
