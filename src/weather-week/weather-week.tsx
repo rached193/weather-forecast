@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { header$ } from '../header/header.store';
 import { DetailDay } from './detail-day/detail-day';
 import './weather-week.scss'
@@ -11,7 +11,7 @@ import { WeekCard, WeekCardModel } from './week-card/week-car';
 
 
 
-export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[], selectedDay: number }> {
+export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[], selectedDay: number, city: string }> {
 
     suscription!: Subscription;
 
@@ -19,18 +19,20 @@ export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[]
         super(props);
         this.state = {
             dataWeek: [],
-            selectedDay: 0
+            selectedDay: 0,
+            city: ''
         };
     }
 
     componentDidMount() {
         const currentDate = new Date();
         this.suscription = header$.pipe(
-            switchMap(x => fromFetch(`/find?city=${x}&date=${currentDate.toISOString()}`, {
+            switchMap(city => fromFetch(`/find?city=${city}&date=${currentDate.toISOString()}`, {
                 selector: response => response.json()
-            }))
-        ).subscribe(res => {
-            this.setState({ dataWeek: res, selectedDay: 0 })
+            }).pipe(map(res => [res, city]))
+            )
+        ).subscribe(([res, city]) => {
+            this.setState({ dataWeek: res, selectedDay: 0, city: city })
         });
     }
 
@@ -46,6 +48,7 @@ export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[]
 
         return (
             <div className="container-week">
+                <h1>{this.state.city}</h1>
                 <div className="week">
                     {this.state.dataWeek.map((x, i) =>
                         <div className="week-day-container" onClick={() => { this.changeDay(i) }}>
@@ -54,6 +57,9 @@ export class WeatherWeek extends React.Component<{}, { dataWeek: WeekCardModel[]
                     )}
                 </div>
                 <DetailDay hours={this.state.dataWeek[this.state.selectedDay]?.temperatureHours}></DetailDay>
+                {this.state.dataWeek.length === 0 &&
+                <h1>Seleccione una ciudad para comenzar</h1>
+                }
             </div>
         );
     }

@@ -1,3 +1,4 @@
+import { throws } from "node:assert";
 import React from "react";
 import { header$ } from "../header.store";
 import "./autocomplete.scss";
@@ -6,26 +7,32 @@ export type AutocompleteModel = {
     cities: string[]
 }
 
-export class AutoComplete extends React.Component<AutocompleteModel, { active: boolean }> {
+export class AutoComplete extends React.Component<AutocompleteModel, { active: boolean, cities: string[], value: string }> {
 
     constructor(props: AutocompleteModel) {
         super(props);
-        this.state = { active: false };
+        this.state = { active: false, cities: props.cities, value: '' };
+    }
+
+
+    componentDidUpdate(prevProbs: AutocompleteModel) {
+        if (this.props.cities !== prevProbs.cities) {
+            this.setState({ cities: this.props.cities });
+        }
     }
 
 
     render() {
-        const numbers = this.props.cities;
-        const listItems = numbers.map((cities) =>
-            <div key={cities.toString()} className="selectOption" onMouseDown={() => this.clickOption(cities)} >{cities}</div>
-        );
 
         return (
             <div className="input-container">
-                <input onFocus={this.showOptions} onInput={(event) => this.filterOptions(event)} onBlur={this.outInput}></input>
+                <input onFocus={this.showOptions} onInput={(event) => this.filterOptions(event)} onBlur={this.outInput} value={this.state.value}></input>
                 {this.state.active &&
                     <div className="comboBox">
-                        {listItems}
+                        {this.state.cities.length === 0 && <div className="selectOption">No se han encontrado resultados</div>}
+                        {this.state.cities.map((cities) =>
+                            <div key={cities.toString()} className="selectOption" onMouseDown={() => this.clickOption(cities)} >{cities}</div>
+                        )}
                     </div>
                 }
             </div>
@@ -36,9 +43,9 @@ export class AutoComplete extends React.Component<AutocompleteModel, { active: b
         this.setState({ active: true });
     }
     clickOption(value: string) {
-        console.log(value);
         header$.next(value);
-        this.setState({ active: false });
+        const filteredValues = this.props.cities.filter(x => x.toLowerCase().includes(value.toLowerCase()));
+        this.setState({ active: false, value: value, cities: filteredValues });
     }
     outInput = () => {
         this.setState({ active: false });
@@ -46,8 +53,8 @@ export class AutoComplete extends React.Component<AutocompleteModel, { active: b
 
     filterOptions(event: React.FormEvent<HTMLInputElement>) {
         const input = event.target as HTMLInputElement;
-
-        console.log(input.value);
+        const filteredValues = this.props.cities.filter(x => x.toLowerCase().includes(input.value.toLowerCase()));
+        this.setState({ cities: filteredValues, value: input.value });
     }
 
 }

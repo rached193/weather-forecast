@@ -8,9 +8,6 @@ import './header.scss'
 export class Header extends React.Component<{}, { cities: string[] }> {
 
 
-    suscription!: Subscription;
-
-
     constructor(probs: {}) {
         super(probs);
         this.state = { cities: [] };
@@ -24,9 +21,6 @@ export class Header extends React.Component<{}, { cities: string[] }> {
         });
     }
 
-    componentWillUnmount() {
-        this.suscription.unsubscribe();
-    }
     render() {
         return <header className="header">
             <div className="searcher">
@@ -34,7 +28,7 @@ export class Header extends React.Component<{}, { cities: string[] }> {
                     <AutoComplete cities={this.state.cities} />
                 </div>
 
-                <span>Escriba una ciudad</span>
+                <span>Buscar ciudad</span>
             </div>
 
         </header>;
